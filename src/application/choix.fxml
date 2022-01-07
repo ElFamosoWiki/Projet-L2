@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.projcontroller">
+   <children>
+      <Button fx:id="trans" layoutX="117.0" layoutY="160.0" mnemonicParsing="false" onAction="#gotrans" prefHeight="81.0" prefWidth="148.0" text="Transcription">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="ouvra" layoutX="343.0" layoutY="160.0" mnemonicParsing="false" onAction="#goouvra" prefHeight="81.0" prefWidth="148.0" text="Ouvrage">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="decob" layoutX="245.0" layoutY="316.0" mnemonicParsing="false" onAction="#deco" prefHeight="45.0" prefWidth="111.0" text="Deconnexion" />
+   </children>
+</AnchorPane>
