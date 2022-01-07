@@ -19,16 +19,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -42,6 +47,7 @@ public class projcontroller {
 	String password=""; 
 	public String mail;
 	
+	@FXML private ComboBox combobox;
 	@FXML private Button testid;
 	public void testaction(ActionEvent event) {
 
@@ -105,14 +111,15 @@ public class projcontroller {
 	}
 	
 	@FXML private Button ouvra;
-	public void goouvra(ActionEvent event) {
+	public void goouvra(ActionEvent event) throws ClassNotFoundException, SQLException {
 
 			try {
 				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("ouvrage.fxml"));
 				Stage stage = new Stage();
-				stage.setScene(new Scene(root,600,400));
+				stage.setScene(new Scene(root,875,550));
 				stage.show();
 				((Node) event.getSource()).getScene().getWindow().hide();
+		
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -334,10 +341,73 @@ public class projcontroller {
 			
 			int i = stmt.executeUpdate(sql);
 			JOptionPane.showMessageDialog(null, "Ouvrage ajouté");
+			titre.setText("");
+			lieux.setText("");
+			nbpages.setText("");
+			dateed.setText("");
+			comm.setText("");
+			
+			
+			
 			}
 	}
 	
+
+	public void affichecomboo() throws ClassNotFoundException, SQLException {
+	 ObservableList<String> names = FXCollections.observableArrayList();
+     String sql = "SELECT * FROM ouvrage";
+     Class.forName("com.mysql.cj.jdbc.Driver");
+	Connection con=DriverManager.getConnection(url,login,password);
+	PreparedStatement prepsta;
+	ResultSet rs;
+	prepsta = con.prepareStatement(sql);
+	rs = prepsta.executeQuery();
+     while (rs.next()) {
+         String name = rs.getString("titre");
+         names.add(name);
+         System.out.println(name);
+         System.out.println(names);
+         
+     }
+     combobox.setItems(null);
+     combobox.setItems(names);
+	 }
 	
+	@FXML private TextField titre1;
+	@FXML private TextField lieux1;
+	@FXML private TextField nbpages1;
+	@FXML private TextField dateed1;
+	@FXML private TextField comm1;
+	@FXML private Button loadb;
+	public void testload(ActionEvent event) throws ClassNotFoundException, SQLException {
+		
+            String sql = "SELECT * FROM ouvrage WHERE titre=?";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        	Connection con=DriverManager.getConnection(url,login,password);
+        	PreparedStatement prepsta;
+        	ResultSet rs;
+
+        	prepsta = con.prepareStatement(sql);
+        	prepsta.setString(1, (String)combobox.getSelectionModel().getSelectedItem());
+            rs = prepsta.executeQuery();
+            
+            while(rs.next()){
+            	titre1.setText(rs.getString("titre"));
+            	lieux1.setText(rs.getString("lieux_associés"));
+            	nbpages1.setText(rs.getString("nombres_pages"));
+            	dateed1.setText(rs.getString("année_édition"));
+            	comm1.setText(rs.getString("commentaire"));
+           
+               
+            }
+            prepsta.close();
+            rs.close();
+       
+	}
+	
+	public void bombo(MouseEvent event) throws ClassNotFoundException, SQLException {
+		affichecomboo();
+	}
 	@FXML private Button decob;
 	public void deco(ActionEvent event) {
 
